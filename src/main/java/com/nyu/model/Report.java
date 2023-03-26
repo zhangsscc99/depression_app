@@ -1,12 +1,11 @@
 package com.nyu.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.data.annotation.CreatedDate;
 
 @Document(collection = "reports")
 public class Report {
@@ -15,10 +14,10 @@ public class Report {
     private String id;
 
     @DBRef
-    private String user_id;
+    private Account user;
 
-    @DateTimeFormat(iso = ISO.DATE_TIME)
-    private Date date;
+    @CreatedDate
+    private LocalDateTime createdDate;
 
     private Float score;
     private String description;
@@ -26,10 +25,9 @@ public class Report {
     @Field
     private Boolean starred = false;
 
-    public Report(String user_id, Date date, Float score, String description, Boolean starred) {
+    public Report(Account user, Float score, String description, Boolean starred) {
         super();
-        this.user_id = user_id;
-        this.date = date;
+        this.user = user;
         this.score = score;
         this.description = description;
         this.starred = starred;
@@ -39,20 +37,12 @@ public class Report {
         return id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public Account getUser() {
+        return user;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
     public Float getScore() {

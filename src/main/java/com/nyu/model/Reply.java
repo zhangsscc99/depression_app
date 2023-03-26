@@ -17,7 +17,7 @@ public class Reply {
     private Account user;
 
     @DBRef
-    private String postId;
+    private Post post;
 
     @CreatedDate
     private LocalDateTime createdDate;
@@ -25,14 +25,12 @@ public class Reply {
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
 
-    private String title;
     private String content;
 
-    public Reply(Account user, String postId, String title, String content) {
+    public Reply(Account user, Post post, String content) {
         super();
         this.user = user;
-        this.postId = postId;
-        this.title = title;
+        this.post = post;
         this.content = content;
     }
 
@@ -52,20 +50,8 @@ public class Reply {
         return lastModifiedDate;
     }
 
-    public String getPostId() {
-        return postId;
-    }
-
-    public void setPostId(String postId) {
-        this.postId = postId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public Post getPost() {
+        return post;
     }
 
     public String getContent() {
