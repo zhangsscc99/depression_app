@@ -1,11 +1,11 @@
 package com.nyu.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Document(collection = "replies")
 public class Reply {
@@ -14,22 +14,24 @@ public class Reply {
     private String id;
 
     @DBRef
-    private String user_id;
+    private Account user;
 
     @DBRef
-    private String post_id;
+    private String postId;
 
-    @DateTimeFormat(iso = ISO.DATE_TIME)
-    private Date date;
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 
     private String title;
     private String content;
 
-    public Reply(String user_id, String post_id, Date date, String title, String content) {
+    public Reply(Account user, String postId, String title, String content) {
         super();
-        this.user_id = user_id;
-        this.post_id = post_id;
-        this.date = date;
+        this.user = user;
+        this.postId = postId;
         this.title = title;
         this.content = content;
     }
@@ -38,28 +40,24 @@ public class Reply {
         return id;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public Account getUser() {
+        return user;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public String getPost_id() {
-        return post_id;
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setPost_id(String post_id) {
-        this.post_id = post_id;
+    public String getPostId() {
+        return postId;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
     public String getTitle() {
@@ -78,6 +76,5 @@ public class Reply {
         this.content = content;
     }
 
-    
     
 }
