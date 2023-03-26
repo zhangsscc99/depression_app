@@ -7,11 +7,11 @@ import com.nyu.model.Reply;
 
 public interface ReplyRepository extends MongoRepository<Reply, String>{
     
-    @Query("{user_id: '?0'}")
-    List<Reply> findAllRepliesByUserId(String user_id);
+    @Query(value="{'user.$username': ?0}")
+    List<Reply> findAllRepliesByUsername(String username);
 
-    @Query("{post_id: '?0'}")
-    List<Reply> findAllRepliesByPostId(String post_id);
+    @Query(value="{'post.id': ?0}")
+    List<Reply> findAllRepliesByPostId(String id);
     
     // other custom methods
 }

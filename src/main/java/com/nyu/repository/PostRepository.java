@@ -4,11 +4,13 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import com.nyu.model.Post;
 
-
 public interface PostRepository extends MongoRepository<Post, String>{
     
-    @Query("{user_id: '?0'}")
-    List<Post> findAllPostsByUserId(String user_id);
+    @Query(value="{'user.$username': ?0}")
+    List<Post> findAllPostsByUsername(String username);
 
+    @Query(value="{type: 'announcement'}")
+    List<Post> findAllAccouncements();
+    
     // other custom methods
 }

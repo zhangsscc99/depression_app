@@ -6,9 +6,12 @@ import com.nyu.model.Report;
 
 
 public interface ReportRepository extends MongoRepository<Report, String>{
-    
-    @Query("{user_id: '?0'}")
-    List<Report> findAllReportsByUserId(String user_id);
 
+    @Query(value="{'user.$username': ?0}")
+    List<Report> findAllReportsByUsername(String username);
+
+    @Query(value="{starred: true}")
+    List<Report> findAllStarredReports();
+    
     // other custom methods
 }
