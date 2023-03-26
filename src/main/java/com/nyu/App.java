@@ -38,19 +38,20 @@ public class App implements CommandLineRunner{
         // Clean up any previous data
 		accountRepo.deleteAll(); // Doesn't delete the collection
         postRepo.deleteAll();
+        replyRepo.deleteAll();
         
         System.out.println("-------------CREATE ACCONUT AND POSTS-------------------------------\n");
         
         createAccounts();
-        createPosts();
+        createPostAndReply();
         
         System.out.println("\n----------------SHOW ALL ACCOUNTS---------------------------\n");
         
         showAllAccounts();
 
-        System.out.println("\n----------------SHOW ALL POSTS---------------------------\n");
+        System.out.println("\n----------------SHOW ALL POSTS AND REPLIES---------------------------\n");
         
-        showAllPosts();
+        showAllPostsAndReplies();
 
         System.out.println("\n-------------TESTING METHODS----------------\n");
 
@@ -59,7 +60,7 @@ public class App implements CommandLineRunner{
 
         accountRepo.findAllAdmins().forEach(account2 -> System.out.println(account2.getUsername()));
 
-        postRepo.findAllPostsByUserId(account1.getId()).forEach(post -> System.out.println(post.getTitle()));
+        postRepo.findAllPostsByUsername(account1.getUsername()).forEach(post -> System.out.println(post.getTitle()));
         
         System.out.println("\n--------------DONE-----------------------------------\n");
 
@@ -74,17 +75,22 @@ public class App implements CommandLineRunner{
         System.out.println("Data creation complete...");
     }
 
-    public void createPosts() {
+    public void createPostAndReply() {
         Account nyuAccount = accountRepo.findAccountByUsername("nyu");
-        postRepo.save(new Post(nyuAccount, "post1", "this is the first post", "regular"));
-    }
+        Post post = new Post(nyuAccount, "post1", "this is the first post", "regular");
+        postRepo.save(post);
+        replyRepo.save(new Reply(nyuAccount, post, "this is the first reply"));
+        }
 
     public void showAllAccounts() {
         accountRepo.findAll().forEach(account -> System.out.println(getAccountDetails(account)));
     }
 
-    public void showAllPosts() {
-        postRepo.findAll().forEach(post -> System.out.print(getPostDetails(post)));
+    public void showAllPostsAndReplies() {
+        postRepo.findAll().forEach(post -> {
+            System.out.print(getPostDetails(post)); 
+            replyRepo.findAllRepliesByPostId(post.getId()).forEach(reply -> {System.out.println(reply.getContent());});
+        });
     }
 
     public String getAccountDetails(Account account) {
